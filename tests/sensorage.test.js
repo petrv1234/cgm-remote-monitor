@@ -2,14 +2,13 @@
 
 var should = require('should');
 var times = require('../lib/times');
-var levels = require('../lib/levels');
+const helper = require('./inithelper')();
 
 describe('sage', function ( ) {
-  var env = require('../env')();
-  var ctx = {};
+  var env = require('../lib/server/env')();
+  var ctx = helper.getctx();
   ctx.ddata = require('../lib/data/ddata')();
   ctx.notifications = require('../lib/notifications')(env, ctx);
-  ctx.language = require('../lib/language')();
   var sage = require('../lib/plugins/sensorage')(ctx);
   var sandbox = require('../lib/sandbox')();
 
@@ -44,6 +43,7 @@ describe('sage', function ( ) {
         }
       }
     };
+    ctx.language = require('../lib/language')();
 
     var sbx = sandbox.clientInit(ctx, Date.now(), data);
     sage.setProperties(sbx);
@@ -71,6 +71,7 @@ describe('sage', function ( ) {
         }
       }
     };
+    ctx.language = require('../lib/language')();
 
     var sbx = sandbox.clientInit(ctx, Date.now(), data);
     sage.setProperties(sbx);
@@ -98,6 +99,7 @@ describe('sage', function ( ) {
         }
       }
     };
+    ctx.language = require('../lib/language')();
 
     var sbx = sandbox.clientInit(ctx, Date.now(), data);
     sage.setProperties(sbx);
@@ -127,6 +129,7 @@ describe('sage', function ( ) {
         }
       }
     };
+    ctx.language = require('../lib/language')();
 
     var sbx = sandbox.clientInit(ctx, Date.now(), data);
     sage.setProperties(sbx);
@@ -147,7 +150,7 @@ describe('sage', function ( ) {
     sage.checkNotifications(sbx);
 
     var highest = ctx.notifications.findHighestAlarm('SAGE');
-    highest.level.should.equal(levels.URGENT);
+    highest.level.should.equal(ctx.levels.URGENT);
     highest.title.should.equal('Sensor age 6 days 22 hours');
     done();
   });
